@@ -21,7 +21,7 @@ import { TicketManager } from './components/TicketManager';
 import type { Asset, ActivityLog, DashboardStats, UserSession, Ticket } from './types';
 import './App.css';
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+const API_BASE = import.meta.env.VITE_API_URL || 'https://novotion-services-it-asset.onrender.com/api';
 
 function App() {
   const [assets, setAssets] = useState<Asset[]>([]);

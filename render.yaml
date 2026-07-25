@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: novotion-it-backend
+    env: node
+    plan: free
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
+    disk:
+      name: database-storage
+      mountPath: /data
+      sizeGB: 1
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: DATABASE_PATH
+        value: /data/database.sqlite
