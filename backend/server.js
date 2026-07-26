@@ -88,8 +88,20 @@ app.post('/api/auth/login', async (req, res) => {
 
 // GET all support tickets
 app.get('/api/tickets', async (req, res) => {
+  const userRole = req.headers['x-user-role'];
+  const userEmail = req.headers['x-user-email'];
+
   try {
-    const tickets = await dbAll('SELECT * FROM tickets ORDER BY created_at DESC');
+    let query = 'SELECT * FROM tickets';
+    const params = [];
+
+    if (userRole === 'it' && userEmail) {
+      query += ' WHERE email = ?';
+      params.push(userEmail);
+    }
+    
+    query += ' ORDER BY created_at DESC';
+    const tickets = await dbAll(query, params);
     res.json(tickets);
   } catch (error) {
     console.error('Error fetching tickets:', error);
@@ -129,6 +141,8 @@ app.post('/api/tickets', async (req, res) => {
 app.put('/api/tickets/:id/status', async (req, res) => {
   const { status } = req.body;
   const ticketId = req.params.id;
+  const userRole = req.headers['x-user-role'];
+  const userEmail = req.headers['x-user-email'];
 
   if (!status || !['Open', 'In Progress', 'Resolved'].includes(status)) {
     return res.status(400).json({ error: 'Valid status is required' });
@@ -138,6 +152,10 @@ app.put('/api/tickets/:id/status', async (req, res) => {
     const ticket = await dbGet('SELECT * FROM tickets WHERE id = ?', [ticketId]);
     if (!ticket) {
       return res.status(404).json({ error: 'Support ticket not found' });
+    }
+
+    if (userRole === 'it' && ticket.email !== userEmail) {
+      return res.status(403).json({ error: 'Unauthorized: IT users can only manage their own tickets' });
     }
 
     await dbRun(
@@ -160,11 +178,17 @@ app.put('/api/tickets/:id/status', async (req, res) => {
 // DELETE support ticket
 app.delete('/api/tickets/:id', async (req, res) => {
   const ticketId = req.params.id;
+  const userRole = req.headers['x-user-role'];
+  const userEmail = req.headers['x-user-email'];
 
   try {
     const ticket = await dbGet('SELECT * FROM tickets WHERE id = ?', [ticketId]);
     if (!ticket) {
       return res.status(404).json({ error: 'Support ticket not found' });
+    }
+
+    if (userRole === 'it' && ticket.email !== userEmail) {
+      return res.status(403).json({ error: 'Unauthorized: IT users can only delete their own tickets' });
     }
 
     await dbRun('DELETE FROM tickets WHERE id = ?', [ticketId]);
@@ -182,6 +206,9 @@ app.delete('/api/tickets/:id', async (req, res) => {
 
 // GET all assets with search and filter
 app.get('/api/assets', async (req, res) => {
+  const userRole = req.headers['x-user-role'];
+  const userEmail = req.headers['x-user-email'];
+
   try {
     const { search, type, status, sort, order } = req.query;
     let sql = 'SELECT * FROM assets WHERE 1=1';
@@ -210,6 +237,21 @@ app.get('/api/assets', async (req, res) => {
     sql += ` ORDER BY ${activeSort} ${activeOrder}`;
 
     const assets = await dbAll(sql, params);
+
+    // Apply visibility constraints: IT users cannot see passwords of other users' assets
+    if (userRole === 'it') {
+      assets.forEach(asset => {
+        if (asset.user_email !== userEmail) {
+          if (asset.password !== null && asset.password !== '') {
+            asset.password = '[Access Restricted]';
+          }
+          if (asset.email_password !== null && asset.email_password !== '') {
+            asset.email_password = '[Access Restricted]';
+          }
+        }
+      });
+    }
+
     res.json(assets);
   } catch (error) {
     console.error('Error fetching assets:', error);
@@ -253,11 +295,24 @@ app.get('/api/logs', async (req, res) => {
 
 // GET single asset by ID
 app.get('/api/assets/:id', async (req, res) => {
+  const userRole = req.headers['x-user-role'];
+  const userEmail = req.headers['x-user-email'];
+
   try {
     const asset = await dbGet('SELECT * FROM assets WHERE id = ?', [req.params.id]);
     if (!asset) {
       return res.status(404).json({ error: 'Asset not found' });
     }
+
+    if (userRole === 'it' && asset.user_email !== userEmail) {
+      if (asset.password !== null && asset.password !== '') {
+        asset.password = '[Access Restricted]';
+      }
+      if (asset.email_password !== null && asset.email_password !== '') {
+        asset.email_password = '[Access Restricted]';
+      }
+    }
+
     res.json(asset);
   } catch (error) {
     console.error('Error fetching asset:', error);

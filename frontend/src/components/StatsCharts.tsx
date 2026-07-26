@@ -9,9 +9,9 @@ interface StatsChartsProps {
 export const StatsCharts: React.FC<StatsChartsProps> = ({ stats, loading }) => {
   if (loading || !stats) {
     return (
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 animate-pulse">
-        <div className="glass-panel border border-slate-200 rounded-2xl p-6 h-64 bg-slate-100/50" />
-        <div className="glass-panel border border-slate-200 rounded-2xl p-6 h-64 bg-slate-100/50" />
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 animate-pulse select-none">
+        <div className="glass-panel border border-white/10 rounded-2xl p-6 h-64 bg-white/5" />
+        <div className="glass-panel border border-white/10 rounded-2xl p-6 h-64 bg-white/5" />
       </div>
     );
   }
@@ -20,34 +20,24 @@ export const StatsCharts: React.FC<StatsChartsProps> = ({ stats, loading }) => {
   const totalAssets = stats.total || 1;
   const sortedMakes = [...(stats.makeBreakdown || [])].sort((a, b) => b.count - a.count);
 
-  // Status colors helper
+  // Status colors helper (Cyan/Blue Theme)
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'Active': return 'bg-indigo-600';
-      case 'In Stock': return 'bg-emerald-600';
-      case 'Maintenance': return 'bg-amber-600';
+      case 'Active': return 'bg-[#0066ff]';
+      case 'In Stock': return 'bg-emerald-500';
+      case 'Maintenance': return 'bg-amber-500';
       case 'Retired': return 'bg-slate-500';
-      default: return 'bg-blue-600';
+      default: return 'bg-[#38bdf8]';
     }
   };
 
   const getStatusBorderColor = (status: string) => {
     switch (status) {
-      case 'Active': return 'border-indigo-100';
-      case 'In Stock': return 'border-emerald-100';
-      case 'Maintenance': return 'border-amber-100';
-      case 'Retired': return 'border-slate-150';
-      default: return 'border-blue-100';
-    }
-  };
-
-  const getStatusBgColor = (status: string) => {
-    switch (status) {
-      case 'Active': return 'bg-indigo-50/50';
-      case 'In Stock': return 'bg-emerald-50/50';
-      case 'Maintenance': return 'bg-amber-50/50';
-      case 'Retired': return 'bg-slate-50/50';
-      default: return 'bg-blue-50/50';
+      case 'Active': return 'border-blue-500/30';
+      case 'In Stock': return 'border-emerald-500/30';
+      case 'Maintenance': return 'border-amber-500/30';
+      case 'Retired': return 'border-white/10';
+      default: return 'border-sky-500/30';
     }
   };
 
@@ -55,11 +45,11 @@ export const StatsCharts: React.FC<StatsChartsProps> = ({ stats, loading }) => {
   const statuses = stats.statusBreakdown || [];
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 select-none">
       {/* Manufacturer Distribution */}
-      <div className="glass-panel border border-slate-200 rounded-2xl p-6 relative overflow-hidden shadow-sm">
-        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-indigo-500" />
-        <h3 className="text-base font-bold text-slate-800 mb-4 tracking-wide font-heading">Manufacturer Distribution</h3>
+      <div className="glass-panel border border-white/10 rounded-2xl p-6 relative overflow-hidden shadow-2xl bg-slate-900/60">
+        <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-[#0066ff] to-[#38bdf8]" />
+        <h3 className="text-sm font-bold text-white mb-4 tracking-wider font-heading uppercase">Manufacturer Distribution</h3>
         
         <div className="space-y-4">
           {sortedMakes.length > 0 ? (
@@ -68,17 +58,17 @@ export const StatsCharts: React.FC<StatsChartsProps> = ({ stats, loading }) => {
               return (
                 <div key={idx} className="space-y-1.5">
                   <div className="flex justify-between items-center text-xs font-semibold">
-                    <span className="text-slate-700">{item.make}</span>
-                    <span className="text-slate-500 font-medium">
+                    <span className="text-white/80">{item.make}</span>
+                    <span className="text-white/50 font-medium">
                       {item.count} {item.count === 1 ? 'device' : 'devices'}{' '}
-                      <span className="text-[10px] text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded ml-2 font-bold border border-indigo-100/50">
+                      <span className="text-[9px] text-[#38bdf8] bg-[#38bdf8]/10 px-2 py-0.5 rounded ml-2 font-bold border border-[#38bdf8]/20">
                         {percentage}%
                       </span>
                     </span>
                   </div>
-                  <div className="w-full h-2.5 bg-slate-100 border border-slate-200/50 rounded-full overflow-hidden">
+                  <div className="w-full h-2.5 bg-white/5 border border-white/10 rounded-full overflow-hidden">
                     <div
-                      className="h-full bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full transition-all duration-1000"
+                      className="h-full bg-gradient-to-r from-[#0066ff] to-[#38bdf8] rounded-full transition-all duration-1000"
                       style={{ width: `${percentage}%` }}
                     />
                   </div>
@@ -86,7 +76,7 @@ export const StatsCharts: React.FC<StatsChartsProps> = ({ stats, loading }) => {
               );
             })
           ) : (
-            <div className="flex items-center justify-center h-40 text-slate-400 text-sm">
+            <div className="flex items-center justify-center h-40 text-white/40 text-sm italic">
               No manufacturer data available
             </div>
           )}
@@ -94,19 +84,19 @@ export const StatsCharts: React.FC<StatsChartsProps> = ({ stats, loading }) => {
       </div>
 
       {/* Status Breakdown & Health */}
-      <div className="glass-panel border border-slate-200 rounded-2xl p-6 relative overflow-hidden shadow-sm">
-        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-indigo-500 to-purple-500" />
-        <h3 className="text-base font-bold text-slate-800 mb-4 tracking-wide font-heading">Status Allocation</h3>
+      <div className="glass-panel border border-white/10 rounded-2xl p-6 relative overflow-hidden shadow-2xl bg-slate-900/60">
+        <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-[#0066ff] to-indigo-650" />
+        <h3 className="text-sm font-bold text-white mb-4 tracking-wider font-heading uppercase">Status Allocation</h3>
 
         <div className="flex flex-col sm:flex-row items-center justify-around h-full gap-6">
           {/* Custom SVG Donut Chart */}
           <div className="relative w-32 h-32 flex items-center justify-center">
-            <svg className="w-full h-full transform -rotate-95" viewBox="0 0 100 100">
+            <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
               <circle
                 cx="50"
                 cy="50"
                 r="40"
-                className="stroke-slate-100 fill-transparent"
+                className="stroke-white/5 fill-transparent"
                 strokeWidth="10"
               />
               {/* Dynamic segmented stroke */}
@@ -118,9 +108,9 @@ export const StatsCharts: React.FC<StatsChartsProps> = ({ stats, loading }) => {
                   const strokeDashoffset = -accumulatedPercent;
                   accumulatedPercent += percent;
 
-                  let color = '#4f46e5'; // indigo-600
-                  if (item.status === 'In Stock') color = '#10b981'; // emerald-600
-                  if (item.status === 'Maintenance') color = '#d97706'; // amber-600
+                  let color = '#0066ff'; // electric blue
+                  if (item.status === 'In Stock') color = '#10b981'; // emerald-500
+                  if (item.status === 'Maintenance') color = '#f59e0b'; // amber-500
                   if (item.status === 'Retired') color = '#6b7280'; // slate-500
 
                   return (
@@ -142,8 +132,8 @@ export const StatsCharts: React.FC<StatsChartsProps> = ({ stats, loading }) => {
               })()}
             </svg>
             <div className="absolute flex flex-col items-center justify-center">
-              <span className="text-2xl font-bold text-slate-800">{totalAssets}</span>
-              <span className="text-[9px] uppercase text-slate-400 tracking-wider font-bold">Total Assets</span>
+              <span className="text-2xl font-black text-white font-heading">{totalAssets}</span>
+              <span className="text-[8px] uppercase text-white/40 tracking-wider font-bold">Total Assets</span>
             </div>
           </div>
 
@@ -154,15 +144,15 @@ export const StatsCharts: React.FC<StatsChartsProps> = ({ stats, loading }) => {
               return (
                 <div
                   key={idx}
-                  className={`flex items-center justify-between p-2 rounded-xl border ${getStatusBgColor(item.status)} ${getStatusBorderColor(
+                  className={`flex items-center justify-between p-2.5 rounded-xl border border-white/10 bg-white/5 ${getStatusBorderColor(
                     item.status
-                  )} shadow-sm`}
+                  )} shadow-sm transition-all hover:bg-white/10`}
                 >
                   <div className="flex items-center space-x-2">
                     <span className={`w-2.5 h-2.5 rounded-full ${getStatusColor(item.status)}`} />
-                    <span className="text-xs font-semibold text-slate-700">{item.status}</span>
+                    <span className="text-xs font-semibold text-white/80">{item.status}</span>
                   </div>
-                  <div className="text-xs text-slate-500 font-bold">
+                  <div className="text-xs text-white/50 font-bold">
                     {item.count} ({percent}%)
                   </div>
                 </div>
