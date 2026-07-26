@@ -392,6 +392,17 @@ app.put('/api/assets/:id', async (req, res) => {
       return res.status(400).json({ error: `Serial Number '${sn}' is already in use by another asset` });
     }
 
+    // Guard against overwriting real passwords with the access restriction string
+    let finalPassword = password;
+    if (password === '[Access Restricted]') {
+      finalPassword = existingAsset.password;
+    }
+
+    let finalEmailPassword = email_password;
+    if (email_password === '[Access Restricted]') {
+      finalEmailPassword = existingAsset.email_password;
+    }
+
     const query = `
       UPDATE assets
       SET type = ?, make = ?, model = ?, sn = ?, user_name = ?, user_email = ?, password = ?, email_password = ?, configuration = ?, status = ?, updated_at = CURRENT_TIMESTAMP
@@ -404,8 +415,8 @@ app.put('/api/assets/:id', async (req, res) => {
       sn,
       user_name || null,
       user_email || null,
-      password || null,
-      email_password || null,
+      finalPassword || null,
+      finalEmailPassword || null,
       configuration || null,
       status || 'Active',
       assetId

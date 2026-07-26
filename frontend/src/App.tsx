@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { LandingPage } from './components/LandingPage';
 import { CustomCursor } from './components/CustomCursor';
+import { InteractiveBackground } from './components/InteractiveBackground';
 import { Dashboard } from './components/Dashboard';
 import { StatsCharts } from './components/StatsCharts';
 import { AssetTable } from './components/AssetTable';
@@ -202,6 +203,7 @@ function App() {
   };
 
   // Load initial data & restore session
+  // Load initial data & restore session
   useEffect(() => {
     const savedUser = localStorage.getItem('novotion_user_session');
     if (savedUser) {
@@ -213,8 +215,6 @@ function App() {
         localStorage.removeItem('novotion_user_session');
       }
     }
-    // Fetch initial assets to populate the landing page bento grid
-    fetchAssets();
   }, []);
 
   useEffect(() => {
@@ -225,14 +225,16 @@ function App() {
     }
   }, [currentUser]);
 
-  // Fetch assets whenever search or filter or sort changes
+  // Fetch assets whenever search, filter, sort, or currentUser session state changes
   useEffect(() => {
+    if (!currentUser) return;
+    
     const delayDebounceFn = setTimeout(() => {
       fetchAssets();
     }, 150); // slight debounce for search input
 
     return () => clearTimeout(delayDebounceFn);
-  }, [search, typeFilter, statusFilter, sortField, sortOrder]);
+  }, [currentUser, search, typeFilter, statusFilter, sortField, sortOrder]);
 
   const handleRefreshAll = () => {
     fetchAssets();
@@ -332,6 +334,9 @@ function App() {
       {/* 1. Transparent Crystal Overlay Grid */}
       <div className="absolute inset-0 bg-slate-950/20 backdrop-blur-[2px] z-0 pointer-events-none" />
 
+      {/* Interactive Tech background animation moving with cursor */}
+      <InteractiveBackground />
+
       {/* 2. Custom trailing cursor */}
       <CustomCursor />
 
@@ -367,10 +372,10 @@ function App() {
               <Shield className="w-4.5 h-4.5 text-white" />
             </div>
             
-            {/* Exactly formatted typography: Novotion IT */}
+            {/* Exactly formatted typography: Novotion Services LLP */}
             <div className="flex flex-col text-left">
               <span className="text-white font-extrabold tracking-tight text-base font-heading leading-none uppercase">
-                Novotion <span className="text-[#38bdf8] font-light">IT</span>
+                Novotion <span className="text-[#38bdf8] font-semibold">Services LLP</span>
               </span>
               <span className="text-[8px] text-white/40 tracking-[0.2em] font-bold uppercase mt-0.5">
                 Assets Registry
@@ -613,7 +618,7 @@ function App() {
                     IT Support <span className="text-[#38bdf8] drop-shadow-[0_0_12px_rgba(56,189,248,0.2)]">Ticket Center</span>
                   </h1>
                   <p className="text-white/60 text-xs font-medium mt-1">
-                    Review and resolve system, hardware, and configuration issues raised by Novotion Services employees.
+                    Review and resolve system, hardware, and configuration issues raised by Novotion Services LLP employees.
                   </p>
                 </div>
               </div>

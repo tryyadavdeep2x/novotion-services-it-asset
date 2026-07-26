@@ -124,7 +124,7 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
                   <Shield className="w-4 h-4 text-white" />
                 </div>
                 <span className="text-white font-black tracking-[0.2em] text-xs uppercase font-heading">
-                  Novotion IT Admin
+                  Novotion Services LLP IT Admin
                 </span>
               </div>
               
@@ -197,7 +197,7 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
                   <FileText className="w-4 h-4 text-white" />
                 </div>
                 <span className="text-white font-black tracking-[0.2em] text-xs uppercase font-heading">
-                  Novotion Systems
+                  Novotion Services LLP
                 </span>
               </div>
               
