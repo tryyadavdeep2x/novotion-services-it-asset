@@ -17,8 +17,6 @@ import {
   Layers
 } from 'lucide-react';
 import { LandingPage } from './components/LandingPage';
-import { CustomCursor } from './components/CustomCursor';
-import { InteractiveBackground } from './components/InteractiveBackground';
 import { Dashboard } from './components/Dashboard';
 import { StatsCharts } from './components/StatsCharts';
 import { AssetTable } from './components/AssetTable';
@@ -369,51 +367,36 @@ function App() {
   });
 
   return (
-    <div className="min-h-screen pb-16 relative">
-      {/* 1. Transparent Crystal Overlay Grid */}
-      <div className="absolute inset-0 bg-slate-950/20 backdrop-blur-[2px] z-0 pointer-events-none" />
-
-      {/* Interactive Tech background animation moving with cursor */}
-      <InteractiveBackground />
-
-      {/* 2. Custom trailing cursor */}
-      <CustomCursor />
-
-      {/* 3. Toast Alert notifications */}
+    <div className="min-h-screen bg-slate-900 text-white font-sans">
+      {/* Toast Alert notifications */}
       {toast && (
         <div className="fixed top-6 right-6 z-50 animate-fade-in">
-          <div className={`flex items-center space-x-2.5 px-4 py-3 rounded-full border shadow-2xl backdrop-blur-md ${
-            toast.type === 'success' 
-              ? 'bg-black/90 border-[#38bdf8]/30 text-white shadow-lg shadow-blue-500/5' 
-              : 'bg-black/90 border-rose-500/30 text-rose-550 shadow-lg shadow-rose-500/5'
-          }`}>
+          <div className={`flex items-center space-x-2.5 px-4 py-3 rounded-lg border shadow-xl bg-slate-950 border-[#38bdf8]/20 text-white`}>
             {toast.type === 'success' ? (
               <CheckCircle2 className="w-5 h-5 shrink-0 text-[#38bdf8]" />
             ) : (
               <XCircle className="w-5 h-5 shrink-0 text-rose-500" />
             )}
-            <span className="text-xs font-bold font-mono tracking-wide text-white">{toast.message}</span>
+            <span className="text-xs font-bold tracking-wide text-white">{toast.message}</span>
           </div>
         </div>
       )}
 
-      {/* 4. Fixed top navigation bar (centered, max-width 1400px, rounded-full, 12px blur, transparent bg) */}
-      <header className="fixed top-6 left-0 right-0 z-50 px-4 sm:px-6 select-none">
-        <div className="max-w-[1400px] mx-auto bg-slate-950/30 backdrop-blur-[16px] border border-white/12 rounded-full py-4 px-8 flex items-center justify-between shadow-[0_8px_32px_rgba(0,0,0,0.3)]">
+      {/* Sticky top navigation bar */}
+      <header className="sticky top-0 z-50 bg-slate-900 border-b border-slate-800 py-3 px-6 select-none">
+        <div className="max-w-7xl mx-auto flex items-center justify-between">
           
-          {/* Logo Brand: Scaled to match image_0.png, using cyan/blue shield brand typography */}
+          {/* Logo Brand */}
           <div 
             onClick={() => { if (currentUser) setActiveTab('registry'); }}
-            className="flex items-center space-x-3.5 cursor-pointer select-none"
+            className="flex items-center space-x-2.5 cursor-pointer select-none"
           >
-            {/* Custom stylized Shield Emblem */}
-            <div className="h-8 w-8 rounded-xl bg-gradient-to-br from-[#0066ff] to-[#38bdf8] flex items-center justify-center shadow-md shadow-blue-500/30 animate-pulse">
+            <div className="h-8 w-8 rounded-lg bg-sky-600 flex items-center justify-center">
               <Shield className="w-4.5 h-4.5 text-white" />
             </div>
             
-            {/* Exactly formatted typography: Novotion Services LLP */}
             <div className="flex flex-col text-left">
-              <span className="text-white font-extrabold tracking-tight text-base font-heading leading-none uppercase">
+              <span className="text-white font-extrabold tracking-tight text-sm font-heading leading-none uppercase">
                 Novotion <span className="text-[#38bdf8] font-semibold">Services LLP</span>
               </span>
               <span className="text-[8px] text-white/40 tracking-[0.2em] font-bold uppercase mt-0.5">
@@ -424,32 +407,32 @@ function App() {
 
           {/* Center Navigation Links - Only render when authenticated */}
           {currentUser && (
-            <div className="flex items-center space-x-1 bg-white/5 p-0.5 rounded-full border border-white/5 text-sm font-medium">
+            <div className="flex items-center space-x-1 bg-slate-950 p-0.5 rounded-lg border border-slate-800 text-sm font-medium">
               <button
                 onClick={() => setActiveTab('registry')}
-                className={`px-4 py-1.5 text-xs font-bold rounded-full transition-all cursor-pointer flex items-center gap-1.5 ${
+                className={`px-3 py-1 text-xs font-bold rounded-md transition-all cursor-pointer flex items-center gap-1.5 ${
                   activeTab === 'registry' 
-                    ? 'bg-[#0066ff] text-white shadow-sm' 
-                    : 'text-white/60 hover:text-white'
+                    ? 'bg-sky-600 text-white' 
+                    : 'text-white/60 hover:text-white hover:bg-white/5'
                 }`}
               >
-                <HardDrive className="w-3.5 h-3.5 text-[#38bdf8]" />
+                <HardDrive className="w-3.5 h-3.5" />
                 <span>Registry</span>
               </button>
               
               <button
                 onClick={() => setActiveTab('tickets')}
-                className={`px-4 py-1.5 text-xs font-bold rounded-full transition-all cursor-pointer flex items-center gap-1.5 ${
+                className={`px-3 py-1 text-xs font-bold rounded-md transition-all cursor-pointer flex items-center gap-1.5 ${
                   activeTab === 'tickets' 
-                    ? 'bg-[#0066ff] text-white shadow-sm' 
-                    : 'text-white/60 hover:text-white'
+                    ? 'bg-sky-600 text-white' 
+                    : 'text-white/60 hover:text-white hover:bg-white/5'
                 }`}
               >
-                <Terminal className="w-3.5 h-3.5 text-[#38bdf8]" />
+                <Terminal className="w-3.5 h-3.5" />
                 <span>Tickets</span>
                 {tickets.filter(t => t.status !== 'Resolved').length > 0 && (
-                  <span className={`px-1.5 py-0.5 text-[8px] font-extrabold rounded-full ${
-                    activeTab === 'tickets' ? 'bg-white text-black' : 'bg-[#0066ff] text-white'
+                  <span className={`px-1.5 py-0.5 text-[8px] font-extrabold rounded ${
+                    activeTab === 'tickets' ? 'bg-white text-black' : 'bg-sky-600 text-white'
                   }`}>
                     {tickets.filter(t => t.status !== 'Resolved').length}
                   </span>
@@ -458,12 +441,12 @@ function App() {
             </div>
           )}
 
-          {/* Right Action (Glassmorphism CTA / Status Button) */}
+          {/* Right Action */}
           <div className="flex items-center space-x-3">
             {currentUser ? (
               <div className="flex items-center space-x-3">
-                <div className="hidden md:flex items-center space-x-2 border-r border-white/10 pr-4 mr-1">
-                  <div className="h-7 w-7 rounded-lg bg-white/10 border border-white/10 flex items-center justify-center text-white font-bold text-xs uppercase">
+                <div className="hidden md:flex items-center space-x-2 border-r border-slate-800 pr-4 mr-1">
+                  <div className="h-7 w-7 rounded-lg bg-slate-800 flex items-center justify-center text-white font-bold text-xs uppercase">
                     {currentUser.username.charAt(0)}
                   </div>
                   <div className="text-left">
@@ -474,7 +457,7 @@ function App() {
 
                 <button
                   onClick={handleRefreshAll}
-                  className="p-2 rounded-full border border-white/10 hover:border-[#38bdf8]/50 hover:bg-[#38bdf8]/10 text-white/60 hover:text-[#38bdf8] cursor-pointer active:scale-95 transition-all bg-white/5"
+                  className="p-1.5 rounded-lg border border-slate-800 hover:bg-slate-800 text-white/60 hover:text-white cursor-pointer active:scale-95 transition-all bg-slate-900"
                   title="Sync Database"
                 >
                   <RefreshCw className="w-4 h-4" />
@@ -482,15 +465,15 @@ function App() {
 
                 <button
                   onClick={handleLogout}
-                  className="p-2 rounded-full border border-white/10 hover:border-rose-500/50 hover:bg-rose-500/10 text-white/60 hover:text-rose-500 cursor-pointer active:scale-95 transition-all bg-white/5"
+                  className="p-1.5 rounded-lg border border-slate-800 hover:border-rose-500/40 hover:bg-rose-500/10 text-white/60 hover:text-rose-500 cursor-pointer active:scale-95 transition-all bg-slate-900"
                   title="Secure Sign Out"
                 >
                   <LogOut className="w-4 h-4" />
                 </button>
               </div>
             ) : (
-              <div className="flex items-center space-x-1.5 bg-blue-500/15 border border-[#38bdf8]/20 px-3 py-1.5 rounded-full text-[9px] text-[#38bdf8] font-black tracking-widest uppercase">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#38bdf8] animate-pulse mr-1" />
+              <div className="flex items-center space-x-1.5 bg-blue-500/10 border border-[#38bdf8]/20 px-3 py-1 rounded-lg text-[9px] text-[#38bdf8] font-bold tracking-widest uppercase">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#38bdf8] mr-1" />
                 IT PORTAL ONLINE
               </div>
             )}
@@ -499,8 +482,8 @@ function App() {
         </div>
       </header>
 
-      {/* 5. Main Routing Layout Panels (Centered margin offset for fixed header padding) */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 space-y-8 min-h-[60vh] relative z-10">
+      {/* 5. Main Routing Layout Panels */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 min-h-[60vh] relative z-10">
         
         {/* Mobile Navigation Indicators - Only render when authenticated */}
         {currentUser && (
