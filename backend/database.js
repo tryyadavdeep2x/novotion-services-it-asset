@@ -36,10 +36,19 @@ function initializeDatabase() {
         email_password TEXT,
         configuration TEXT,
         status TEXT DEFAULT 'Active' CHECK(status IN ('Active', 'In Stock', 'Maintenance', 'Retired')),
+        monitor TEXT,
+        keyboard_mouse TEXT,
+        headphone TEXT,
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
         updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
       )
-    `);
+    `, (err) => {
+      if (!err) {
+        db.run("ALTER TABLE assets ADD COLUMN monitor TEXT", () => {});
+        db.run("ALTER TABLE assets ADD COLUMN keyboard_mouse TEXT", () => {});
+        db.run("ALTER TABLE assets ADD COLUMN headphone TEXT", () => {});
+      }
+    });
 
     // Create logs table for audit trail
     db.run(`
@@ -88,17 +97,17 @@ function initializeDatabase() {
       if (row.count === 0) {
         console.log("Seeding database with sample IT assets...");
         const stmt = db.prepare(`
-          INSERT INTO assets (type, make, model, sn, user_name, user_email, password, email_password, configuration, status)
-          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+          INSERT INTO assets (type, make, model, sn, user_name, user_email, password, email_password, configuration, status, monitor, keyboard_mouse, headphone)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         `);
 
-        stmt.run("Laptop", "Apple", "MacBook Pro M3", "SN-APL-89304", "Alice Chen", "alice.chen@novotion.com", "M@cBook#2026!", "AliceEmailPass123", "M3 Pro, 18GB Unified Memory, 512GB SSD, macOS Sequoia", "Active");
-        stmt.run("Desktop", "Dell", "OptiPlex 7000", "SN-DEL-33829", "Bob Johnson", "bob.johnson@novotion.com", "D3ll!P@ss7000", "BobEmailPass7000", "Intel Core i7-13700, 32GB DDR5 RAM, 1TB NVMe SSD, Windows 11 Pro", "Active");
-        stmt.run("Laptop", "Lenovo", "ThinkPad X1 Carbon Gen 11", "SN-LEN-47201", "Emma Watson", "emma.watson@novotion.com", "ThinkP@d#Carbon", "EmmaEmailPassCarbon", "Intel Core i7-1355U, 16GB LPDDR5, 512GB SSD, Windows 11 Pro", "Active");
-        stmt.run("Laptop", "HP", "EliteBook 840 G10", "SN-HPP-10293", null, null, null, null, "Intel Core i5-1335U, 16GB DDR5, 256GB SSD, Windows 11 Pro", "In Stock");
-        stmt.run("Laptop", "Dell", "Latitude 5440", "SN-DEL-98402", "David Miller", "david.miller@novotion.com", "D3ll#Lat!5440", "DavidEmailPass5440", "Intel Core i5-1345U, 16GB DDR5 RAM, 512GB SSD, Windows 11 Pro", "Maintenance");
-        stmt.run("Desktop", "Apple", "Mac Studio", "SN-APL-77492", "Sarah Connor", "sarah.connor@novotion.com", "M@cStudi0#2026", "SarahEmailPassStudio", "M2 Max, 32GB Unified Memory, 1TB SSD, macOS Sonoma", "Active");
-        stmt.run("Laptop", "Asus", "ROG Zephyrus G14", "SN-ASU-44820", "Leon Kennedy", "leon.kennedy@novotion.com", "Z3phyrus!G14", "LeonEmailPassZephyrus", "AMD Ryzen 9, 32GB DDR5, RTX 4070, 1TB SSD, Windows 11 Pro", "Active");
+        stmt.run("Laptop", "Apple", "MacBook Pro M3", "SN-APL-89304", "Alice Chen", "alice.chen@novotion.com", "M@cBook#2026!", "AliceEmailPass123", "M3 Pro, 18GB Unified Memory, 512GB SSD, macOS Sequoia", "Active", "Studio Display 27\"", "Magic Keyboard & Mouse", "AirPods Max");
+        stmt.run("Desktop", "Dell", "OptiPlex 7000", "SN-DEL-33829", "Bob Johnson", "bob.johnson@novotion.com", "D3ll!P@ss7000", "BobEmailPass7000", "Intel Core i7-13700, 32GB DDR5 RAM, 1TB NVMe SSD, Windows 11 Pro", "Active", "Dell UltraSharp 34\"", "Logitech MX Keys & Mouse", "Bose QuietComfort");
+        stmt.run("Laptop", "Lenovo", "ThinkPad X1 Carbon Gen 11", "SN-LEN-47201", "Emma Watson", "emma.watson@novotion.com", "ThinkP@d#Carbon", "EmmaEmailPassCarbon", "Intel Core i7-1355U, 16GB LPDDR5, 512GB SSD, Windows 11 Pro", "Active", "Lenovo ThinkVision 24\"", "Lenovo Wireless Combo", null);
+        stmt.run("Laptop", "HP", "EliteBook 840 G10", "SN-HPP-10293", null, null, null, null, "Intel Core i5-1335U, 16GB DDR5, 256GB SSD, Windows 11 Pro", "In Stock", null, null, null);
+        stmt.run("Laptop", "Dell", "Latitude 5440", "SN-DEL-98402", "David Miller", "david.miller@novotion.com", "D3ll#Lat!5440", "DavidEmailPass5440", "Intel Core i5-1345U, 16GB DDR5 RAM, 512GB SSD, Windows 11 Pro", "Maintenance", "Dell 24\" Monitor", "Dell Keyboard/Mouse", "Sony WH-1000XM4");
+        stmt.run("Desktop", "Apple", "Mac Studio", "SN-APL-77492", "Sarah Connor", "sarah.connor@novotion.com", "M@cStudi0#2026", "SarahEmailPassStudio", "M2 Max, 32GB Unified Memory, 1TB SSD, macOS Sonoma", "Active", "Pro Display XDR", "Magic Keyboard & Mouse", null);
+        stmt.run("Laptop", "Asus", "ROG Zephyrus G14", "SN-ASU-44820", "Leon Kennedy", "leon.kennedy@novotion.com", "Z3phyrus!G14", "LeonEmailPassZephyrus", "AMD Ryzen 9, 32GB DDR5, RTX 4070, 1TB SSD, Windows 11 Pro", "Active", null, "ASUS ROG Claymore II", "HyperX Cloud II");
 
         stmt.finalize();
 

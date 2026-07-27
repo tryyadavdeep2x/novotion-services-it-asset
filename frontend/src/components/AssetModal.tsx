@@ -25,6 +25,9 @@ export const AssetModal: React.FC<AssetModalProps> = ({
   const [password, setPassword] = useState('');
   const [configuration, setConfiguration] = useState('');
   const [status, setStatus] = useState<Asset['status']>('Active');
+  const [monitor, setMonitor] = useState('');
+  const [keyboardMouse, setKeyboardMouse] = useState('');
+  const [headphone, setHeadphone] = useState('');
   
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
@@ -41,6 +44,9 @@ export const AssetModal: React.FC<AssetModalProps> = ({
       setPassword(asset.password || '');
       setConfiguration(asset.configuration || '');
       setStatus(asset.status);
+      setMonitor(asset.monitor || '');
+      setKeyboardMouse(asset.keyboard_mouse || '');
+      setHeadphone(asset.headphone || '');
     } else {
       // Reset to defaults
       setType('Laptop');
@@ -53,6 +59,9 @@ export const AssetModal: React.FC<AssetModalProps> = ({
       setPassword('');
       setConfiguration('');
       setStatus('Active');
+      setMonitor('');
+      setKeyboardMouse('');
+      setHeadphone('');
     }
     setError(null);
   }, [asset, isOpen]);
@@ -79,7 +88,10 @@ export const AssetModal: React.FC<AssetModalProps> = ({
       password: password.trim() || null,
       email_password: emailPassword.trim() || null,
       configuration: configuration.trim() || null,
-      status
+      status,
+      monitor: monitor.trim() || null,
+      keyboard_mouse: keyboardMouse.trim() || null,
+      headphone: headphone.trim() || null
     });
     setSaving(false);
 
@@ -241,7 +253,81 @@ export const AssetModal: React.FC<AssetModalProps> = ({
             </div>
           </div>
 
-          {/* Row 4: Password and PC Configuration */}
+          {/* Row 4: Peripherals & Accessories (Optional) */}
+          <div className="p-4 bg-white/5 border border-white/12 rounded-xl space-y-4 shadow-sm">
+            <h3 className="text-xs font-black text-[#38bdf8] uppercase tracking-widest">Linked Peripherals & Accessories (Optional)</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              
+              {/* Additional Monitor */}
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <label className="text-xs font-semibold text-white/90">Additional Monitor</label>
+                  <input
+                    type="checkbox"
+                    checked={!!monitor}
+                    onChange={(e) => setMonitor(e.target.checked ? 'Standard Monitor' : '')}
+                    className="w-4 h-4 rounded border-white/12 bg-white/5 text-[#38bdf8] focus:ring-0 cursor-pointer"
+                  />
+                </div>
+                {!!monitor && (
+                  <input
+                    type="text"
+                    placeholder="e.g. Dell 27-inch 4K"
+                    value={monitor === 'Standard Monitor' ? '' : monitor}
+                    onChange={(e) => setMonitor(e.target.value || 'Standard Monitor')}
+                    className="w-full px-3 py-1.5 bg-white/5 border border-white/12 rounded-lg text-white placeholder-white/40 text-xs focus:border-[#38bdf8] outline-none transition-all font-sans font-medium"
+                  />
+                )}
+              </div>
+
+              {/* Keyboard & Mouse */}
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <label className="text-xs font-semibold text-white/90">Keyboard & Mouse Set</label>
+                  <input
+                    type="checkbox"
+                    checked={!!keyboardMouse}
+                    onChange={(e) => setKeyboardMouse(e.target.checked ? 'Standard Combo' : '')}
+                    className="w-4 h-4 rounded border-white/12 bg-white/5 text-[#38bdf8] focus:ring-0 cursor-pointer"
+                  />
+                </div>
+                {!!keyboardMouse && (
+                  <input
+                    type="text"
+                    placeholder="e.g. Logitech MX Combo"
+                    value={keyboardMouse === 'Standard Combo' ? '' : keyboardMouse}
+                    onChange={(e) => setKeyboardMouse(e.target.value || 'Standard Combo')}
+                    className="w-full px-3 py-1.5 bg-white/5 border border-white/12 rounded-lg text-white placeholder-white/40 text-xs focus:border-[#38bdf8] outline-none transition-all font-sans font-medium"
+                  />
+                )}
+              </div>
+
+              {/* Headphones */}
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <label className="text-xs font-semibold text-white/90">Headphones</label>
+                  <input
+                    type="checkbox"
+                    checked={!!headphone}
+                    onChange={(e) => setHeadphone(e.target.checked ? 'Standard Headset' : '')}
+                    className="w-4 h-4 rounded border-white/12 bg-white/5 text-[#38bdf8] focus:ring-0 cursor-pointer"
+                  />
+                </div>
+                {!!headphone && (
+                  <input
+                    type="text"
+                    placeholder="e.g. Bose QC 45"
+                    value={headphone === 'Standard Headset' ? '' : headphone}
+                    onChange={(e) => setHeadphone(e.target.value || 'Standard Headset')}
+                    className="w-full px-3 py-1.5 bg-white/5 border border-white/12 rounded-lg text-white placeholder-white/40 text-xs focus:border-[#38bdf8] outline-none transition-all font-sans font-medium"
+                  />
+                )}
+              </div>
+
+            </div>
+          </div>
+
+          {/* Row 5: Password and PC Configuration */}
           <div className="space-y-4">
             <div>
               <label className="block text-white/50 text-[10px] font-extrabold uppercase tracking-widest mb-2">User PC Password</label>

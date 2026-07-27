@@ -82,7 +82,7 @@ export const TicketManager: React.FC<TicketManagerProps> = ({
   return (
     <div className="space-y-4">
       {/* Search and Filters Header */}
-      <div className="glass-panel border border-slate-200 rounded-2xl p-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4 shadow-sm">
+      <div className="glass-panel border border-white/10 rounded-2xl p-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4 shadow-sm bg-white/5">
         
         {/* Search */}
         <div className="relative flex-1 max-w-md">
@@ -92,19 +92,19 @@ export const TicketManager: React.FC<TicketManagerProps> = ({
             placeholder="Search ticket ID, employee, S/N, issue..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 bg-white border border-slate-200 rounded-xl text-slate-800 text-sm focus:border-sky-500 focus:ring-1 focus:ring-sky-500/20 transition-all placeholder:text-slate-400 outline-none"
+            className="w-full pl-10 pr-4 py-2 bg-white/5 border border-white/10 rounded-xl text-white text-sm focus:border-sky-500 focus:ring-1 focus:ring-sky-500/20 transition-all placeholder:text-slate-400 outline-none"
           />
         </div>
 
         {/* Status Tabs and Sync */}
         <div className="flex flex-wrap items-center gap-3">
-          <div className="flex items-center space-x-1.5 bg-white border border-slate-200 p-1 rounded-xl shadow-sm">
+          <div className="flex items-center space-x-1.5 bg-white/5 border border-white/10 p-1 rounded-xl shadow-sm">
             <button
               onClick={() => setStatusFilter('')}
               className={`px-3 py-1 text-xs font-bold rounded-lg transition-all cursor-pointer ${
                 statusFilter === '' 
                   ? 'bg-gradient-to-r from-sky-600 to-indigo-650 text-white shadow-sm' 
-                  : 'text-slate-500 hover:text-slate-800'
+                  : 'text-white/60 hover:text-white'
               }`}
             >
               All Tickets
@@ -114,7 +114,7 @@ export const TicketManager: React.FC<TicketManagerProps> = ({
               className={`px-3 py-1 text-xs font-bold rounded-lg transition-all cursor-pointer ${
                 statusFilter === 'Open' 
                   ? 'bg-gradient-to-r from-sky-600 to-indigo-650 text-white shadow-sm' 
-                  : 'text-slate-500 hover:text-slate-800'
+                  : 'text-white/60 hover:text-white'
               }`}
             >
               Open
@@ -124,7 +124,7 @@ export const TicketManager: React.FC<TicketManagerProps> = ({
               className={`px-3 py-1 text-xs font-bold rounded-lg transition-all cursor-pointer ${
                 statusFilter === 'In Progress' 
                   ? 'bg-gradient-to-r from-sky-600 to-indigo-650 text-white shadow-sm' 
-                  : 'text-slate-500 hover:text-slate-800'
+                  : 'text-white/60 hover:text-white'
               }`}
             >
               In Progress
@@ -134,7 +134,7 @@ export const TicketManager: React.FC<TicketManagerProps> = ({
               className={`px-3 py-1 text-xs font-bold rounded-lg transition-all cursor-pointer ${
                 statusFilter === 'Resolved' 
                   ? 'bg-gradient-to-r from-sky-600 to-indigo-650 text-white shadow-sm' 
-                  : 'text-slate-500 hover:text-slate-800'
+                  : 'text-white/60 hover:text-white'
               }`}
             >
               Resolved
@@ -144,7 +144,7 @@ export const TicketManager: React.FC<TicketManagerProps> = ({
           <button
             onClick={onRefresh}
             title="Refresh tickets list"
-            className="p-2 rounded-xl bg-white border border-slate-200 hover:bg-slate-50 hover:text-slate-800 text-slate-400 cursor-pointer active:scale-95 transition-all shadow-sm"
+            className="p-2 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 hover:text-white text-white/65 cursor-pointer active:scale-95 transition-all shadow-sm"
           >
             <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
           </button>
@@ -158,14 +158,14 @@ export const TicketManager: React.FC<TicketManagerProps> = ({
         <div className="xl:col-span-2 space-y-4">
           {loading ? (
             Array.from({ length: 3 }).map((_, i) => (
-              <div key={i} className="glass-panel border border-slate-200 rounded-2xl p-5 h-44 animate-pulse bg-slate-100/50" />
+              <div key={i} className="glass-panel border border-white/10 rounded-2xl p-5 h-44 animate-pulse bg-white/5" />
             ))
           ) : filteredTickets.length === 0 ? (
-            <div className="glass-panel border border-slate-200 rounded-2xl p-12 text-center text-slate-500 shadow-sm bg-white/70">
+            <div className="glass-panel border border-white/10 rounded-2xl p-12 text-center text-white/60 shadow-sm bg-white/5">
               <div className="flex flex-col items-center justify-center space-y-2.5">
-                <SlidersHorizontal className="w-8 h-8 opacity-30 text-sky-600 animate-float" />
-                <p className="font-semibold text-slate-700">No support tickets found</p>
-                <p className="text-xs text-slate-400">All system requests are resolved or match filters.</p>
+                <SlidersHorizontal className="w-8 h-8 opacity-40 text-sky-400 animate-float" />
+                <p className="font-semibold text-white">No support tickets found</p>
+                <p className="text-xs text-white/40">All system requests are resolved or match filters.</p>
               </div>
             </div>
           ) : (
@@ -175,41 +175,41 @@ export const TicketManager: React.FC<TicketManagerProps> = ({
                 onClick={() => setSelectedTicketId(selectedTicketId === ticket.id ? null : ticket.id)}
                 className={`glass-panel border rounded-2xl p-5 relative overflow-hidden transition-all duration-300 cursor-pointer shadow-sm ${
                   selectedTicketId === ticket.id 
-                    ? 'border-sky-500/40 bg-white/95 shadow-sky-500/5' 
-                    : 'border-slate-200 bg-white/85 hover:border-slate-350 hover:bg-white/90'
+                    ? 'border-sky-500/40 bg-white/10 shadow-sky-500/5' 
+                    : 'border-white/10 bg-white/5 hover:border-white/20 hover:bg-white/10'
                 }`}
               >
                 {/* Visual Accent Glow */}
                 <div className={`absolute top-0 left-0 w-1.5 h-full ${
-                  ticket.status === 'Open' ? 'bg-sky-550' : 
+                  ticket.status === 'Open' ? 'bg-sky-500' : 
                   ticket.status === 'In Progress' ? 'bg-amber-500' : 'bg-emerald-500'
                 }`} />
 
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 ml-2">
                   <div>
                     <div className="flex items-center space-x-2.5">
-                      <span className="text-xs font-mono font-extrabold text-sky-700 bg-sky-55/65 px-2 py-0.5 rounded border border-sky-100/50">
+                      <span className="text-xs font-mono font-extrabold text-[#38bdf8] bg-sky-500/10 px-2 py-0.5 rounded border border-sky-500/20">
                         #{ticket.ticket_id}
                       </span>
                       {getStatusBadge(ticket.status)}
                     </div>
-                    <h3 className="text-base font-bold text-slate-800 mt-2 font-heading">{ticket.name}</h3>
-                    <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-slate-500 mt-1 font-medium">
-                      <span className="flex items-center"><Mail className="w-3.5 h-3.5 mr-1 text-slate-400" /> {ticket.email}</span>
-                      <span className="flex items-center"><Shield className="w-3.5 h-3.5 mr-1 text-slate-400" /> S/N: <strong className="font-mono text-slate-700 select-all ml-0.5">{ticket.sn}</strong></span>
+                    <h3 className="text-base font-bold text-white mt-2 font-heading">{ticket.name}</h3>
+                    <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-white/70 mt-1 font-medium">
+                      <span className="flex items-center"><Mail className="w-3.5 h-3.5 mr-1 text-[#38bdf8]" /> {ticket.email}</span>
+                      <span className="flex items-center"><Shield className="w-3.5 h-3.5 mr-1 text-[#38bdf8]" /> S/N: <strong className="font-mono text-[#38bdf8] select-all ml-0.5">{ticket.sn}</strong></span>
                     </div>
                   </div>
 
                   <div className="flex items-center space-x-2 self-end sm:self-center">
                     {/* Status Toggle buttons */}
-                    <div className="flex items-center space-x-1.5 bg-slate-100 p-1 rounded-xl border border-slate-200/50">
+                    <div className="flex items-center space-x-1.5 bg-white/5 p-1 rounded-xl border border-white/10">
                       <button
                         onClick={(e) => { e.stopPropagation(); handleStatusChange(ticket.id, 'In Progress'); }}
                         disabled={actionLoadingId !== null}
                         className={`px-2.5 py-1 text-[10px] font-bold rounded-lg cursor-pointer transition-all ${
                           ticket.status === 'In Progress' 
                             ? 'bg-amber-500 text-white shadow-sm' 
-                            : 'text-slate-500 hover:text-slate-800'
+                            : 'text-white/60 hover:text-white'
                         }`}
                         title="Mark In Progress"
                       >
@@ -221,7 +221,7 @@ export const TicketManager: React.FC<TicketManagerProps> = ({
                         className={`px-2.5 py-1 text-[10px] font-bold rounded-lg cursor-pointer transition-all ${
                           ticket.status === 'Resolved' 
                             ? 'bg-emerald-500 text-white shadow-sm' 
-                            : 'text-slate-500 hover:text-slate-800'
+                            : 'text-white/60 hover:text-white'
                         }`}
                         title="Mark Resolved"
                       >
@@ -233,7 +233,7 @@ export const TicketManager: React.FC<TicketManagerProps> = ({
                       onClick={(e) => { e.stopPropagation(); handleDeleteClick(ticket.id); }}
                       disabled={actionLoadingId !== null}
                       title="Archive Ticket"
-                      className="p-2 rounded-xl bg-white border border-slate-200 hover:border-rose-500/50 hover:text-rose-600 text-slate-400 cursor-pointer active:scale-95 transition-all shadow-sm"
+                      className="p-2 rounded-xl bg-white/5 border border-white/10 hover:border-rose-500/50 hover:text-rose-550 hover:bg-rose-500/10 text-white/60 cursor-pointer active:scale-95 transition-all shadow-sm"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
                     </button>
@@ -242,15 +242,15 @@ export const TicketManager: React.FC<TicketManagerProps> = ({
 
                 {/* Expaned description details */}
                 <div className={`transition-all duration-300 ease-in-out overflow-hidden ml-2 ${
-                  selectedTicketId === ticket.id ? 'max-h-40 opacity-100 mt-4 pt-3 border-t border-slate-100' : 'max-h-0 opacity-0'
+                  selectedTicketId === ticket.id ? 'max-h-40 opacity-100 mt-4 pt-3 border-t border-white/10' : 'max-h-0 opacity-0'
                 }`}>
-                  <h4 className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5 flex items-center">
-                    <Info className="w-3.5 h-3.5 mr-1 text-slate-400" /> Issue Description
+                  <h4 className="text-xs font-bold text-slate-355 uppercase tracking-wider mb-1.5 flex items-center">
+                    <Info className="w-3.5 h-3.5 mr-1 text-[#38bdf8]" /> Issue Description
                   </h4>
-                  <p className="text-xs text-slate-700 bg-slate-50 border border-slate-150 p-3 rounded-xl font-mono leading-relaxed select-all">
+                  <p className="text-xs text-white bg-black/40 border border-white/10 p-3 rounded-xl font-mono leading-relaxed select-all">
                     {ticket.description}
                   </p>
-                  <div className="flex items-center text-[10px] text-slate-450 mt-3 font-medium">
+                  <div className="flex items-center text-[10px] text-white/50 mt-3 font-medium">
                     <Clock className="w-3 h-3 mr-1 text-slate-400" />
                     Submitted: {new Date(ticket.created_at).toLocaleString()}
                   </div>
@@ -263,37 +263,37 @@ export const TicketManager: React.FC<TicketManagerProps> = ({
         {/* Sidebar Information / Details panel (Right 1 Column) */}
         <div className="space-y-4">
           {/* Quick Ticket Stats */}
-          <div className="glass-panel border border-slate-200 rounded-2xl p-6 relative overflow-hidden shadow-sm bg-white/90">
+          <div className="glass-panel border border-white/10 rounded-2xl p-6 relative overflow-hidden shadow-sm bg-white/5">
             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-sky-500 to-indigo-500" />
-            <h3 className="text-sm font-bold text-slate-800 mb-4 tracking-wide uppercase font-heading">
+            <h3 className="text-sm font-bold text-white mb-4 tracking-wide uppercase font-heading">
               Support Center Queue
             </h3>
             
             <div className="space-y-3">
-              <div className="flex justify-between items-center p-3 bg-slate-50 border border-slate-200/50 rounded-xl">
-                <span className="text-xs font-semibold text-slate-600">Total Unresolved</span>
-                <span className="text-sm font-extrabold text-slate-800">
+              <div className="flex justify-between items-center p-3 bg-white/5 border border-white/10 rounded-xl">
+                <span className="text-xs font-semibold text-slate-300">Total Unresolved</span>
+                <span className="text-sm font-extrabold text-white">
                   {tickets.filter(t => t.status !== 'Resolved').length}
                 </span>
               </div>
 
-              <div className="flex justify-between items-center p-3 bg-sky-50/50 border border-sky-100/50 rounded-xl">
-                <span className="text-xs font-semibold text-sky-700">Open Tickets</span>
-                <span className="text-sm font-extrabold text-sky-850">
+              <div className="flex justify-between items-center p-3 bg-sky-500/10 border border-sky-500/20 rounded-xl">
+                <span className="text-xs font-semibold text-sky-300">Open Tickets</span>
+                <span className="text-sm font-extrabold text-sky-400 drop-shadow-[0_0_6px_rgba(56,189,248,0.4)]">
                   {tickets.filter(t => t.status === 'Open').length}
                 </span>
               </div>
 
-              <div className="flex justify-between items-center p-3 bg-amber-50/50 border border-amber-100/50 rounded-xl">
-                <span className="text-xs font-semibold text-amber-700">In Progress</span>
-                <span className="text-sm font-extrabold text-amber-850">
+              <div className="flex justify-between items-center p-3 bg-amber-500/10 border border-amber-500/20 rounded-xl">
+                <span className="text-xs font-semibold text-amber-300">In Progress</span>
+                <span className="text-sm font-extrabold text-amber-400 drop-shadow-[0_0_6px_rgba(245,158,11,0.4)]">
                   {tickets.filter(t => t.status === 'In Progress').length}
                 </span>
               </div>
 
-              <div className="flex justify-between items-center p-3 bg-emerald-50/50 border border-emerald-100/50 rounded-xl">
-                <span className="text-xs font-semibold text-emerald-700">Resolved Archive</span>
-                <span className="text-sm font-extrabold text-emerald-850">
+              <div className="flex justify-between items-center p-3 bg-emerald-500/10 border border-emerald-500/20 rounded-xl">
+                <span className="text-xs font-semibold text-emerald-300">Resolved Archive</span>
+                <span className="text-sm font-extrabold text-emerald-400 drop-shadow-[0_0_6px_rgba(16,185,129,0.4)]">
                   {tickets.filter(t => t.status === 'Resolved').length}
                 </span>
               </div>
@@ -301,22 +301,22 @@ export const TicketManager: React.FC<TicketManagerProps> = ({
           </div>
 
           {/* Quick IT Guide Card */}
-          <div className="glass-panel border border-slate-200 rounded-2xl p-6 relative overflow-hidden shadow-sm bg-white/70">
-            <h3 className="text-xs font-bold text-slate-500 mb-2.5 uppercase tracking-wider font-heading flex items-center">
-              <Info className="w-4 h-4 mr-1.5 text-indigo-500" />
+          <div className="glass-panel border border-white/10 rounded-2xl p-6 relative overflow-hidden shadow-sm bg-white/5">
+            <h3 className="text-xs font-bold text-white/80 mb-2.5 uppercase tracking-wider font-heading flex items-center">
+              <Info className="w-4 h-4 mr-1.5 text-indigo-400" />
               IT Help Desk Instructions
             </h3>
-            <ul className="text-xs text-slate-600 space-y-2.5 leading-relaxed font-normal">
+            <ul className="text-xs text-white/70 space-y-2.5 leading-relaxed font-normal">
               <li className="flex items-start gap-1.5">
-                <span className="text-emerald-500 font-bold mt-0.5">✔</span>
+                <span className="text-emerald-400 font-bold mt-0.5">✔</span>
                 <span>Select a ticket card to view the employee's detailed issue write-up.</span>
               </li>
               <li className="flex items-start gap-1.5">
-                <span className="text-emerald-500 font-bold mt-0.5">✔</span>
-                <span>Mark tickets as **Progress** when checking logs, or **Resolve** once fixed.</span>
+                <span className="text-emerald-400 font-bold mt-0.5">✔</span>
+                <span>Mark tickets as <strong className="font-bold text-white">Progress</strong> when checking logs, or <strong className="font-bold text-white">Resolve</strong> once fixed.</span>
               </li>
               <li className="flex items-start gap-1.5">
-                <span className="text-emerald-500 font-bold mt-0.5">✔</span>
+                <span className="text-emerald-400 font-bold mt-0.5">✔</span>
                 <span>Archiving/deleting a ticket removes it from the queue and writes an audit event.</span>
               </li>
             </ul>

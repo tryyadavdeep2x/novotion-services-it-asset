@@ -10,6 +10,9 @@ export interface Asset {
   email_password?: string | null;
   configuration: string | null;
   status: 'Active' | 'In Stock' | 'Maintenance' | 'Retired';
+  monitor?: string | null;
+  keyboard_mouse?: string | null;
+  headphone?: string | null;
   created_at: string;
   updated_at: string;
 }

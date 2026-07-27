@@ -11,7 +11,11 @@ import {
   User, 
   Mail, 
   History,
-  Info
+  Info,
+  Monitor,
+  Keyboard,
+  Headphones,
+  Layers
 } from 'lucide-react';
 import type { Asset, ActivityLog } from '../types';
 
@@ -245,6 +249,42 @@ export const AssetDetail: React.FC<AssetDetailProps> = ({
               )}
             </div>
           </div>
+
+          {/* Section 3.5: Linked Peripherals & Accessories */}
+          {(asset.monitor || asset.keyboard_mouse || asset.headphone) && (
+            <div className="p-4 bg-white/5 border border-white/10 rounded-xl space-y-3 shadow-sm">
+              <h3 className="text-xs font-black text-[#38bdf8] uppercase tracking-widest flex items-center">
+                <Layers className="w-3.5 h-3.5 mr-1.5 text-[#38bdf8]" />
+                Assigned Accessories & Peripherals
+              </h3>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                {asset.monitor && (
+                  <div className="p-2.5 bg-black/35 border border-white/5 rounded-lg flex flex-col justify-between">
+                    <span className="text-[9px] font-extrabold text-white/40 uppercase tracking-wider flex items-center mb-1">
+                      <Monitor className="w-3.5 h-3.5 text-[#38bdf8] mr-1" /> Monitor
+                    </span>
+                    <span className="text-xs font-extrabold text-white leading-tight">{asset.monitor}</span>
+                  </div>
+                )}
+                {asset.keyboard_mouse && (
+                  <div className="p-2.5 bg-black/35 border border-white/5 rounded-lg flex flex-col justify-between">
+                    <span className="text-[9px] font-extrabold text-white/40 uppercase tracking-wider flex items-center mb-1">
+                      <Keyboard className="w-3.5 h-3.5 text-[#38bdf8] mr-1" /> Keyboard/Mouse
+                    </span>
+                    <span className="text-xs font-extrabold text-white leading-tight">{asset.keyboard_mouse}</span>
+                  </div>
+                )}
+                {asset.headphone && (
+                  <div className="p-2.5 bg-black/35 border border-white/5 rounded-lg flex flex-col justify-between">
+                    <span className="text-[9px] font-extrabold text-white/40 uppercase tracking-wider flex items-center mb-1">
+                      <Headphones className="w-3.5 h-3.5 text-[#38bdf8] mr-1" /> Headphones
+                    </span>
+                    <span className="text-xs font-extrabold text-white leading-tight">{asset.headphone}</span>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
 
           {/* Section 4: History Logs */}
           <div className="space-y-2">

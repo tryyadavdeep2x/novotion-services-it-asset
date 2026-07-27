@@ -10,7 +10,11 @@ import {
   HardDrive,
   Trash2,
   LogOut,
-  Globe2
+  Globe2,
+  Monitor,
+  Keyboard,
+  Headphones,
+  Layers
 } from 'lucide-react';
 import { LandingPage } from './components/LandingPage';
 import { CustomCursor } from './components/CustomCursor';
@@ -329,6 +333,41 @@ function App() {
     setIsModalOpen(true);
   };
 
+  // Derive linked peripherals
+  const peripherals: Array<{
+    id: string;
+    type: 'Monitor' | 'Keyboard/Mouse' | 'Headphones';
+    model: string;
+    parentAsset: Asset;
+  }> = [];
+
+  assets.forEach(asset => {
+    if (asset.monitor) {
+      peripherals.push({
+        id: `${asset.id}-monitor`,
+        type: 'Monitor',
+        model: asset.monitor,
+        parentAsset: asset
+      });
+    }
+    if (asset.keyboard_mouse) {
+      peripherals.push({
+        id: `${asset.id}-kb`,
+        type: 'Keyboard/Mouse',
+        model: asset.keyboard_mouse,
+        parentAsset: asset
+      });
+    }
+    if (asset.headphone) {
+      peripherals.push({
+        id: `${asset.id}-hp`,
+        type: 'Headphones',
+        model: asset.headphone,
+        parentAsset: asset
+      });
+    }
+  });
+
   return (
     <div className="min-h-screen pb-16 relative">
       {/* 1. Transparent Crystal Overlay Grid */}
@@ -598,6 +637,86 @@ function App() {
                   onRefresh={handleRefreshAll}
                   userRole={currentUser.role}
                 />
+              </div>
+
+              {/* Linked Peripherals & Accessories Section */}
+              <div className="space-y-4 pt-8 select-none">
+                <div className="flex items-center space-x-2">
+                  <Layers className="w-5 h-5 text-[#38bdf8] animate-float-icon" />
+                  <h2 className="text-xl font-bold text-white font-heading uppercase tracking-[-0.05em]">Linked Peripherals & Accessories</h2>
+                </div>
+                
+                {loading ? (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 animate-pulse">
+                    {Array.from({ length: 4 }).map((_, i) => (
+                      <div key={i} className="glass-panel border border-white/10 rounded-2xl p-5 h-32 bg-white/5" />
+                    ))}
+                  </div>
+                ) : peripherals.length === 0 ? (
+                  <div className="glass-panel border border-white/10 rounded-2xl p-8 text-center text-white/50 bg-white/5 font-medium text-xs italic">
+                    No additional peripherals are currently linked to any workstation.
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 animate-fade-in">
+                    {peripherals.map(p => {
+                      const statusColorClass = 
+                        p.parentAsset.status === 'Active' ? 'bg-[#38bdf8] shadow-[0_0_10px_rgba(56,189,248,0.5)]' :
+                        p.parentAsset.status === 'In Stock' ? 'bg-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.5)]' :
+                        p.parentAsset.status === 'Maintenance' ? 'bg-amber-400 shadow-[0_0_10px_rgba(251,191,36,0.5)]' :
+                        'bg-white/30';
+
+                      const borderClass = 
+                        p.parentAsset.status === 'Active' ? 'border-sky-500/25 hover:border-sky-500/50' :
+                        p.parentAsset.status === 'In Stock' ? 'border-emerald-500/25 hover:border-emerald-500/50' :
+                        p.parentAsset.status === 'Maintenance' ? 'border-amber-500/25 hover:border-amber-500/50' :
+                        'border-white/10 hover:border-white/20';
+
+                      return (
+                        <div
+                          key={p.id}
+                          className={`glass-panel border rounded-2xl p-5 relative overflow-hidden transition-all duration-300 bg-white/5 hover:bg-white/10 hover:shadow-lg ${borderClass}`}
+                        >
+                          {/* Parent Status Dot Indicator */}
+                          <div className="absolute top-4 right-4 flex items-center space-x-1.5">
+                            <span className={`w-2 h-2 rounded-full ${statusColorClass}`} />
+                            <span className="text-[8px] font-bold text-white/40 uppercase tracking-wider">{p.parentAsset.status}</span>
+                          </div>
+
+                          <div className="flex items-start space-x-3.5">
+                            <div className="p-2.5 rounded-xl bg-white/5 border border-white/10 shadow-sm flex items-center justify-center text-[#38bdf8] shrink-0 mt-0.5">
+                              {p.type === 'Monitor' && <Monitor className="w-5 h-5" />}
+                              {p.type === 'Keyboard/Mouse' && <Keyboard className="w-5 h-5" />}
+                              {p.type === 'Headphones' && <Headphones className="w-5 h-5" />}
+                            </div>
+
+                            <div className="space-y-1 text-left">
+                              <div className="text-[10px] font-extrabold text-[#38bdf8] uppercase tracking-widest leading-none mb-1">
+                                {p.type}
+                              </div>
+                              <h3 className="text-sm font-bold text-white leading-tight font-heading truncate max-w-[150px]" title={p.model}>
+                                {p.model === 'Standard Monitor' ? 'Monitor Unit' :
+                                 p.model === 'Standard Combo' ? 'Keyboard & Mouse Combo' :
+                                 p.model === 'Standard Headset' ? 'Headphones Set' : p.model}
+                              </h3>
+                              
+                              <div className="text-[10px] text-white/70 pt-1">
+                                <div className="font-extrabold truncate max-w-[150px]">
+                                  {p.parentAsset.user_name ? `User: ${p.parentAsset.user_name}` : 'Unassigned'}
+                                </div>
+                                <div className="text-white/45 truncate max-w-[150px]">
+                                  {p.parentAsset.make} {p.parentAsset.model}
+                                </div>
+                                <div className="text-[9px] font-mono text-white/35 font-semibold mt-0.5 select-all">
+                                  {p.parentAsset.sn}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
               </div>
             </>
           ) : (

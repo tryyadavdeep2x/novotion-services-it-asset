@@ -322,7 +322,7 @@ app.get('/api/assets/:id', async (req, res) => {
 
 // POST create new asset
 app.post('/api/assets', async (req, res) => {
-  const { type, make, model, sn, user_name, user_email, password, email_password, configuration, status } = req.body;
+  const { type, make, model, sn, user_name, user_email, password, email_password, configuration, status, monitor, keyboard_mouse, headphone } = req.body;
 
   if (!type || !make || !model || !sn) {
     return res.status(400).json({ error: 'Type, Make, Model, and Serial Number (SN) are required' });
@@ -336,8 +336,8 @@ app.post('/api/assets', async (req, res) => {
     }
 
     const query = `
-      INSERT INTO assets (type, make, model, sn, user_name, user_email, password, email_password, configuration, status)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      INSERT INTO assets (type, make, model, sn, user_name, user_email, password, email_password, configuration, status, monitor, keyboard_mouse, headphone)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
     const params = [
       type,
@@ -349,7 +349,10 @@ app.post('/api/assets', async (req, res) => {
       password || null,
       email_password || null,
       configuration || null,
-      status || 'Active'
+      status || 'Active',
+      monitor || null,
+      keyboard_mouse || null,
+      headphone || null
     ];
 
     const result = await dbRun(query, params);
@@ -373,7 +376,7 @@ app.put('/api/assets/:id', async (req, res) => {
     return res.status(403).json({ error: 'Unauthorized: Only administrators can modify asset registry details' });
   }
 
-  const { type, make, model, sn, user_name, user_email, password, email_password, configuration, status } = req.body;
+  const { type, make, model, sn, user_name, user_email, password, email_password, configuration, status, monitor, keyboard_mouse, headphone } = req.body;
   const assetId = req.params.id;
 
   if (!type || !make || !model || !sn) {
@@ -405,7 +408,7 @@ app.put('/api/assets/:id', async (req, res) => {
 
     const query = `
       UPDATE assets
-      SET type = ?, make = ?, model = ?, sn = ?, user_name = ?, user_email = ?, password = ?, email_password = ?, configuration = ?, status = ?, updated_at = CURRENT_TIMESTAMP
+      SET type = ?, make = ?, model = ?, sn = ?, user_name = ?, user_email = ?, password = ?, email_password = ?, configuration = ?, status = ?, monitor = ?, keyboard_mouse = ?, headphone = ?, updated_at = CURRENT_TIMESTAMP
       WHERE id = ?
     `;
     const params = [
@@ -419,6 +422,9 @@ app.put('/api/assets/:id', async (req, res) => {
       finalEmailPassword || null,
       configuration || null,
       status || 'Active',
+      monitor || null,
+      keyboard_mouse || null,
+      headphone || null,
       assetId
     ];
 
@@ -434,6 +440,15 @@ app.put('/api/assets/:id', async (req, res) => {
     }
     if (existingAsset.make !== make || existingAsset.model !== model) {
       changes.push(`Device: "${existingAsset.make} ${existingAsset.model}" -> "${make} ${model}"`);
+    }
+    if (existingAsset.monitor !== monitor) {
+      changes.push(`Monitor: "${existingAsset.monitor || 'None'}" -> "${monitor || 'None'}"`);
+    }
+    if (existingAsset.keyboard_mouse !== keyboard_mouse) {
+      changes.push(`Keyboard/Mouse: "${existingAsset.keyboard_mouse || 'None'}" -> "${keyboard_mouse || 'None'}"`);
+    }
+    if (existingAsset.headphone !== headphone) {
+      changes.push(`Headphone: "${existingAsset.headphone || 'None'}" -> "${headphone || 'None'}"`);
     }
 
     const logDetails = `Updated ${type} (S/N: ${sn}). ` + (changes.length > 0 ? `Changes: ${changes.join(', ')}` : 'No major fields changed.');
