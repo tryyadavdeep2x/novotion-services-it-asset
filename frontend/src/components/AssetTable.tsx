@@ -128,9 +128,9 @@ export const AssetTable: React.FC<AssetTableProps> = ({
               onChange={(e) => setTypeFilter(e.target.value)}
               className="bg-transparent text-xs text-white outline-none cursor-pointer pr-2 font-bold uppercase tracking-wider"
             >
-              <option value="" className="bg-slate-950 text-white font-normal">All Devices</option>
-              <option value="Laptop" className="bg-slate-950 text-white font-normal">Laptops</option>
-              <option value="Desktop" className="bg-slate-950 text-white font-normal">Desktops</option>
+              <option value="">All Devices</option>
+              <option value="Laptop">Laptops</option>
+              <option value="Desktop">Desktops</option>
             </select>
           </div>
 
@@ -140,11 +140,11 @@ export const AssetTable: React.FC<AssetTableProps> = ({
               onChange={(e) => setStatusFilter(e.target.value)}
               className="bg-transparent text-xs text-white outline-none cursor-pointer pr-2 font-bold uppercase tracking-wider"
             >
-              <option value="" className="bg-slate-950 text-white font-normal">All Statuses</option>
-              <option value="Active" className="bg-slate-950 text-white font-normal">Active</option>
-              <option value="In Stock" className="bg-slate-950 text-white font-normal">In Stock</option>
-              <option value="Maintenance" className="bg-slate-950 text-white font-normal">Maintenance</option>
-              <option value="Retired" className="bg-slate-950 text-white font-normal">Retired</option>
+              <option value="">All Statuses</option>
+              <option value="Active">Active</option>
+              <option value="In Stock">In Stock</option>
+              <option value="Maintenance">Maintenance</option>
+              <option value="Retired">Retired</option>
             </select>
           </div>
 

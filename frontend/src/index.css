@@ -91,8 +91,19 @@ header .bg-sky-600 {
 }
 
 /* Buttons inside header nav links active */
-header button.bg-sky-600 span, header button.bg-sky-600 svg {
+header button.bg-sky-600 > span:not(.rounded), header button.bg-sky-600 svg {
   color: #ffffff !important;
+}
+
+/* Header nav badges text color */
+header button span.rounded {
+  color: #ffffff !important;
+  background-color: #0284c7 !important;
+}
+
+header button.bg-sky-600 span.rounded {
+  color: #0284c7 !important;
+  background-color: #ffffff !important;
 }
 
 /* Main content titles */
@@ -133,10 +144,14 @@ h1.text-white {
   color: #64748b !important;
 }
 
-/* Forms and Inputs */
 input[type="text"], input[type="email"], input[type="password"], textarea, select {
   background-color: #ffffff !important;
   border: 1px solid #cbd5e1 !important;
+  color: #0f172a !important;
+}
+
+select option {
+  background-color: #ffffff !important;
   color: #0f172a !important;
 }
 

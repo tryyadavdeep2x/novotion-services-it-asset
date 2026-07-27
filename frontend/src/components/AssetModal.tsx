@@ -206,10 +206,10 @@ export const AssetModal: React.FC<AssetModalProps> = ({
                 onChange={(e) => setStatus(e.target.value as Asset['status'])}
                 className="w-full px-3.5 py-2.5 bg-white/5 border border-white/12 rounded-xl text-white text-sm focus:border-[#38bdf8] outline-none cursor-pointer font-bold transition-all"
               >
-                <option value="Active" className="bg-slate-950 text-white font-normal">Active</option>
-                <option value="In Stock" className="bg-slate-950 text-white font-normal">In Stock</option>
-                <option value="Maintenance" className="bg-slate-950 text-white font-normal">Maintenance</option>
-                <option value="Retired" className="bg-slate-950 text-white font-normal">Retired</option>
+                <option value="Active">Active</option>
+                <option value="In Stock">In Stock</option>
+                <option value="Maintenance">Maintenance</option>
+                <option value="Retired">Retired</option>
               </select>
             </div>
           </div>
