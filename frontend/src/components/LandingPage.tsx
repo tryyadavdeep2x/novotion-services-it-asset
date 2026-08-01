@@ -42,7 +42,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigateToItHub, ass
   ];
 
   return (
-    <div className="space-y-0 pb-16 animate-fade-in select-none">
+    <div className="space-y-0 pb-16 animate-[videoFade_0.8s_ease-out_both] select-none">
       
       {/* 1. Immersive Full-Viewport Hero Section with Video */}
       <section className="relative w-full h-screen overflow-hidden -mt-24 flex items-center justify-start px-6 sm:px-12 md:px-24">
@@ -53,7 +53,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigateToItHub, ass
           loop 
           muted 
           playsInline 
-          className="absolute inset-0 w-full h-full object-cover pointer-events-none z-0"
+          className="absolute inset-0 w-full h-full object-cover pointer-events-none z-0 animate-[videoFade_1.5s_ease-out_both]"
         >
           <source 
             src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260511_131941_d136af49-e243-493a-be14-6ff3f24e09e6.mp4" 
@@ -67,24 +67,24 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigateToItHub, ass
         {/* Hero Left Stack Content */}
         <div className="relative z-20 max-w-2xl flex flex-col space-y-6 pt-16 select-none">
           {/* Metadata Wide Tagline */}
-          <span className="text-[10px] text-[#ff5e00] font-black uppercase tracking-[0.4em]">
+          <span className="text-[10px] text-[#ff5e00] font-black uppercase tracking-[0.4em] animate-[revealUp_0.8s_cubic-bezier(0.16,1,0.3,1)_both]">
             SECURE INFRASTRUCTURE / CAPITAL LOGISTICS
           </span>
 
           {/* Massive 72px tight letter-spacing Header */}
-          <h1 className="text-4xl sm:text-7xl font-black text-white leading-[1.0] tracking-[-0.05em] font-heading uppercase">
+          <h1 className="text-4xl sm:text-7xl font-black text-white leading-[1.0] tracking-[-0.05em] font-heading uppercase animate-[revealUp_0.8s_cubic-bezier(0.16,1,0.3,1)_0.15s_both]">
             Smarter Capital<br />
             Allocation.<br />
             Seamless Growth.
           </h1>
 
           {/* Muted 18px description paragraph */}
-          <p className="text-white/60 text-base sm:text-lg max-w-[450px] leading-[1.6] font-normal">
+          <p className="text-white/60 text-base sm:text-lg max-w-[450px] leading-[1.6] font-normal animate-[revealUp_0.8s_cubic-bezier(0.16,1,0.3,1)_0.3s_both]">
             Deploy capital with automated compliance audits, algorithmic risk mitigation, and real-time yield optimization. Seamlessly manage security controls and physical hardware infrastructure.
           </p>
 
           {/* Side-by-Side Glassmorphic CTAs */}
-          <div className="flex flex-col sm:flex-row gap-4 pt-4">
+          <div className="flex flex-col sm:flex-row gap-4 pt-4 animate-[revealUp_0.8s_cubic-bezier(0.16,1,0.3,1)_0.45s_both]">
             <button 
               onClick={() => {
                 const calculator = document.getElementById('yield-optimizer');
@@ -107,7 +107,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigateToItHub, ass
         </div>
 
         {/* Absolute positioned Bottom Status Bar & Indicator */}
-        <div className="absolute bottom-10 left-6 sm:left-12 md:left-24 right-6 sm:right-12 md:right-24 z-20 flex justify-between items-end border-t border-white/5 pt-6 select-none">
+        <div className="absolute bottom-10 left-6 sm:left-12 md:left-24 right-6 sm:right-12 md:right-24 z-20 flex justify-between items-end border-t border-white/5 pt-6 select-none animate-[revealUp_0.8s_cubic-bezier(0.16,1,0.3,1)_0.6s_both]">
           {/* Left: Location/Brand info */}
           <div className="text-[11px] text-white/40 font-mono tracking-widest leading-relaxed uppercase">
             NOVOTION SERVICES INC. / NYC DIRECTORY<br />
@@ -137,7 +137,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigateToItHub, ass
       </section>
 
       {/* 2. Bento Grid Section (Now Below the fold) */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 animate-[revealUp_1s_cubic-bezier(0.16,1,0.3,1)_0.75s_both]">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           
           {/* Card 1: Total AUM */}

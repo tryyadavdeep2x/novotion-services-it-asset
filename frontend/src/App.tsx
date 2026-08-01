@@ -53,6 +53,7 @@ function App() {
   const [tickets, setTickets] = useState<Ticket[]>([]);
   const [ticketsLoading, setTicketsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<'login' | 'registry' | 'tickets'>('login');
+  const [revealTransition, setRevealTransition] = useState(false);
   
   const [loading, setLoading] = useState(true);
   const [statsLoading, setStatsLoading] = useState(true);
@@ -69,10 +70,14 @@ function App() {
   };
 
   const handleLoginSuccess = (user: UserSession) => {
-    setCurrentUser(user);
-    localStorage.setItem('novotion_user_session', JSON.stringify(user));
-    setActiveTab('registry'); // Route to registry dashboard
-    showToast(`Welcome back, ${user.username}!`);
+    setRevealTransition(true);
+    setTimeout(() => {
+      setCurrentUser(user);
+      localStorage.setItem('novotion_user_session', JSON.stringify(user));
+      setActiveTab('registry'); // Route to registry dashboard
+      setRevealTransition(false);
+      showToast(`Welcome back, ${user.username}!`);
+    }, 1300);
   };
 
   const handleLogout = () => {
@@ -368,6 +373,32 @@ function App() {
 
   return (
     <div className="min-h-screen bg-slate-900 text-white font-sans">
+      {/* Immersive Auth Transition Overlay */}
+      {revealTransition && (
+        <div className="fixed inset-0 z-[9999] bg-[#0f172a] session-transition-overlay flex flex-col items-center justify-center animate-[videoFade_0.4s_ease-out_both] select-none pointer-events-none">
+          <div className="space-y-6 text-center flex flex-col items-center">
+            {/* Glowing shield emblem */}
+            <div className="h-16 w-16 rounded-2xl bg-gradient-to-br from-sky-500 to-blue-600 flex items-center justify-center shadow-lg shadow-sky-500/20 animate-[zoom-in_0.6s_cubic-bezier(0.16,1,0.3,1)_both]">
+              <Shield className="w-8 h-8 text-white animate-pulse" />
+            </div>
+            
+            <div className="space-y-1.5">
+              <h2 className="text-white font-extrabold tracking-tight text-lg uppercase font-heading animate-[revealUp_0.8s_both]">
+                Initializing Secure Session
+              </h2>
+              <p className="text-white/40 text-xs font-mono tracking-wider uppercase animate-[revealUp_1s_both_0.1s]">
+                Verifying Encrypted Credentials...
+              </p>
+            </div>
+
+            {/* Scanner line progress loader */}
+            <div className="w-48 h-1 bg-slate-800 rounded-full overflow-hidden mt-4 relative animate-[revealUp_1s_both_0.2s]">
+              <div className="absolute top-0 left-0 h-full bg-[#0284c7] rounded-full animate-marquee w-1/3" />
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Toast Alert notifications */}
       {toast && (
         <div className="fixed top-6 right-6 z-50 animate-fade-in">
@@ -388,7 +419,7 @@ function App() {
           
           {/* Logo Brand */}
           <div 
-            onClick={() => { if (currentUser) setActiveTab('registry'); }}
+            onClick={() => { if (currentUser) { setActiveTab('registry'); } else { setActiveTab('login'); } }}
             className="flex items-center space-x-2.5 cursor-pointer select-none"
           >
             <div className="h-8 w-8 rounded-lg bg-sky-600 flex items-center justify-center">
@@ -512,6 +543,7 @@ function App() {
         )}
 
         {/* Tab Switch Panels */}
+
         {activeTab === 'login' && (
           currentUser ? (
             <div className="text-center py-12 text-white/60 text-xs font-mono">

@@ -237,38 +237,70 @@ table tbody tr td .text-white\/30 {
 }
 
 /* Details and Editing Modals */
-.fixed.inset-0 {
+.fixed.inset-0:not(.session-transition-overlay) {
   background-color: rgba(15, 23, 42, 0.5) !important;
 }
 
-.fixed.inset-0 .glass-panel {
+.fixed.inset-0.session-transition-overlay {
+  background-color: #0f172a !important;
+}
+
+.fixed.inset-0.session-transition-overlay .text-white {
+  color: #ffffff !important;
+}
+
+.fixed.inset-0.session-transition-overlay .text-white\/40 {
+  color: rgba(255, 255, 255, 0.4) !important;
+}
+
+.fixed.inset-0:not(.session-transition-overlay) .glass-panel {
   background-color: #ffffff !important;
   border-color: #e2e8f0 !important;
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
 }
 
-.fixed.inset-0 .bg-slate-950\/70, .fixed.inset-0 .bg-slate-950\/30 {
+.fixed.inset-0:not(.session-transition-overlay) .bg-slate-950\/70, 
+.fixed.inset-0:not(.session-transition-overlay) .bg-slate-950\/30 {
   background-color: #ffffff !important;
 }
 
-.fixed.inset-0 .text-white {
+.fixed.inset-0:not(.session-transition-overlay) .text-white,
+.fixed.inset-0:not(.session-transition-overlay) .text-white\/90,
+.fixed.inset-0:not(.session-transition-overlay) .text-white\/80,
+.fixed.inset-0:not(.session-transition-overlay) .text-white\/95 {
   color: #0f172a !important;
 }
 
-.fixed.inset-0 .text-white\/60, .fixed.inset-0 .text-white\/50, .fixed.inset-0 .text-white\/40 {
+.fixed.inset-0:not(.session-transition-overlay) .text-\[\#38bdf8\] {
+  color: #0284c7 !important;
+}
+
+.fixed.inset-0:not(.session-transition-overlay) .bg-\[\#38bdf8\]\/15,
+.fixed.inset-0:not(.session-transition-overlay) .bg-\[\#38bdf8\]\/10 {
+  background-color: #e0f2fe !important;
+}
+
+.fixed.inset-0:not(.session-transition-overlay) .border-\[\#38bdf8\]\/20 {
+  border-color: #bae6fd !important;
+}
+
+.fixed.inset-0:not(.session-transition-overlay) .text-white\/60, 
+.fixed.inset-0:not(.session-transition-overlay) .text-white\/50, 
+.fixed.inset-0:not(.session-transition-overlay) .text-white\/45, 
+.fixed.inset-0:not(.session-transition-overlay) .text-white\/40, 
+.fixed.inset-0:not(.session-transition-overlay) .text-white\/30, 
+.fixed.inset-0:not(.session-transition-overlay) .text-white\/20 {
   color: #475569 !important;
 }
 
-.fixed.inset-0 .bg-white\/5 {
+.fixed.inset-0 .bg-white\/5,
+.fixed.inset-0 .bg-white\/10 {
   background-color: #f8fafc !important;
   border-color: #cbd5e1 !important;
 }
 
-.fixed.inset-0 .bg-black\/30 {
-  background-color: #f1f5f9 !important;
-  border-color: #cbd5e1 !important;
-}
-
+.fixed.inset-0 .bg-black\/35,
+.fixed.inset-0 .bg-black\/30,
 .fixed.inset-0 .bg-black\/40 {
   background-color: #f1f5f9 !important;
   border-color: #cbd5e1 !important;
@@ -368,4 +400,45 @@ svg.text-white\/60, svg.text-white\/50, svg.text-slate-400 {
 
 .animate-fade-in {
   animation: fadeIn 0.2s ease-out forwards;
+}
+
+/* Entrance Reveal Animations */
+@keyframes revealUp {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes videoFade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes zoom-in {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes marquee {
+  0% {
+    left: -40%;
+  }
+  100% {
+    left: 100%;
+  }
 }
